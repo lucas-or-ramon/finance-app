@@ -1,0 +1,28 @@
+mat-table {
+  overflow: auto;
+  max-height: 600px;
+}
+
+.action-column {
+  flex: 0 0 75px;
+}
+
+.action-column-header {
+  flex: 0 0 75px;
+}
+
+.center-cell, mat-header-cell {
+  justify-content: center;
+}
+
+.gray-icon {
+  color: gray;
+}
+
+.red-icon {
+  color: red;
+}
+
+.green-icon {
+  color: green;
+}

@@ -1,0 +1,63 @@
+<mat-card>
+
+  <mat-toolbar color="warn">
+    <span>Despesa</span>
+  </mat-toolbar>
+
+  <mat-card-content>
+    <form [formGroup]="form" class="min-width">
+
+      <mat-form-field class="cell-form">
+        <mat-label>Dia de Vencimento</mat-label>
+        <input matInput [matDatepicker]="dpDate" formControlName="date">
+        <mat-datepicker-toggle matSuffix [for]="dpDate"></mat-datepicker-toggle>
+        <mat-datepicker #dpDate startView="month" panelClass="example-month-picker"></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field class="cell-form">
+        <input matInput placeholder="Descrição" formControlName="description">
+      </mat-form-field>
+
+      <mat-form-field class="cell-form">
+        <input matInput placeholder="Valor" formControlName="value">
+      </mat-form-field>
+
+      <mat-form-field class="cell-form">
+        <mat-label>Status</mat-label>
+        <mat-select formControlName="status">
+          <mat-option value="OK">Pago</mat-option>
+          <mat-option value="PENDING">Pendente</mat-option>
+          <mat-option value="CANCELED">Cancelado</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field class="cell-form">
+        <mat-label>Recorrência</mat-label>
+        <mat-select formControlName="recurrenceType">
+          <mat-option value="FIXED">Fixado</mat-option>
+          <mat-option value="NORMAL">Normal</mat-option>
+          <mat-option value="INSTALLMENTS">Parcelado</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field class="cell-form">
+        <mat-label>Data Inicial</mat-label>
+        <input matInput [matDatepicker]="dpInitialDate" formControlName="initialDate">
+        <mat-datepicker-toggle matSuffix [for]="dpInitialDate"></mat-datepicker-toggle>
+        <mat-datepicker #dpInitialDate startView="year" panelClass="example-month-picker"></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field class="cell-form">
+        <mat-label>Data Final</mat-label>
+        <input matInput [matDatepicker]="dpFinalDate" formControlName="finalDate">
+        <mat-datepicker-toggle matSuffix [for]="dpFinalDate"></mat-datepicker-toggle>
+        <mat-datepicker #dpFinalDate startView="year" panelClass="example-month-picker"></mat-datepicker>
+      </mat-form-field>
+    </form>
+  </mat-card-content>
+
+  <mat-card-actions>
+    <button mat-raised-button color="primary" (click)="onSubmitExpenditure()">Salvar</button>
+    <button mat-raised-button (click)="onCancelExpenditure()">Cancelar</button>
+  </mat-card-actions>
+</mat-card>

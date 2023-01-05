@@ -1,0 +1,49 @@
+stages:
+  - build
+  - docker
+
+variables:
+  TAG_VERSION: "1.${CI_JOB_ID}"
+  DOCKER_HOST: tcp://docker:2376
+  DOCKER_TLS_CERTDIR: "/certs"
+  DOCKER_TLS_VERIFY: 1
+  DOCKER_CERT_PATH: "${DOCKER_TLS_CERTDIR}/client"
+
+build-job:
+  stage: build
+  image: node:latest
+  script:
+    - npm install
+    - npm run build --prod
+  artifacts:
+    paths:
+      - nginx/default.conf
+      - dist
+      - Dockerfile
+    expire_in: 30 days
+
+docker-job:      
+  when: manual
+  stage: docker
+  image: docker:latest
+  services:
+    - docker:dind
+  before_script:
+    - |
+      for i in $(seq 1 30)
+      do
+          docker login -u "${CI_REGISTRY_USER}" -p "${CI_REGISTRY_PASSWORD}" ${CI_REGISTRY} && break
+          echo "Waiting for docker to start"
+          sleep 1s
+      done
+  script:
+    - mkdir -p docker/nginx
+    - cp -r dist docker/
+    - cp Dockerfile docker/
+    - cp nginx/default.conf docker/nginx
+    - cd docker
+    - docker build -t ${CI_REGISTRY_IMAGE}:${TAG_VERSION} -t ${CI_REGISTRY_IMAGE}:latest .
+    - docker push ${CI_REGISTRY_IMAGE}:${TAG_VERSION}
+    - docker push ${CI_REGISTRY_IMAGE}:latest
+  needs:
+    - job: build-job

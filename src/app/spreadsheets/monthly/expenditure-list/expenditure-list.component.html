@@ -1,0 +1,61 @@
+<mat-table mat-table [dataSource]="expenditures">
+  <!-- Data Column -->
+  <ng-container matColumnDef="date">
+    <mat-header-cell *matHeaderCellDef> Dia de Vencimento </mat-header-cell>
+    <mat-cell class="center-cell" *matCellDef="let expenditure"> {{expenditure.date | date:'dd'}} </mat-cell>
+  </ng-container>
+
+  <!-- Description Column -->
+  <ng-container matColumnDef="description">
+    <mat-header-cell *matHeaderCellDef> Descrição </mat-header-cell>
+    <mat-cell *matCellDef="let expenditure"> {{expenditure.description }} </mat-cell>
+  </ng-container>
+
+  <!-- Status Column -->
+  <ng-container matColumnDef="status">
+    <mat-header-cell *matHeaderCellDef> Status </mat-header-cell>
+    <mat-cell class="center-cell" *matCellDef="let expenditure">
+      <mat-icon class="{{ expenditure.status | colorStatus }}" aria-hidden="false" aria-label="Status Icon" fontIcon="{{ expenditure.status | status }}">{{
+        expenditure.status | status }}</mat-icon>
+    </mat-cell>
+  </ng-container>
+
+  <!-- Value Column -->
+  <ng-container matColumnDef="value">
+    <mat-header-cell  *matHeaderCellDef> Valor </mat-header-cell>
+    <mat-cell *matCellDef="let expenditure"> {{ expenditure.value | currency:'R$'}} </mat-cell>
+  </ng-container>
+
+  <!-- Recurrence Column -->
+  <ng-container matColumnDef="recurrence">
+    <mat-header-cell *matHeaderCellDef> Recorrência </mat-header-cell>
+    <mat-cell class="center-cell" *matCellDef="let expenditure">
+      <div *ngIf="expenditure.recurrence.type != 'INSTALLMENTS'; else installments_info">
+        <mat-icon aria-hidden="false" aria-label="Recurrence Icon" fontIcon="{{ expenditure.recurrence.type | recurrence }}">{{ expenditure.recurrence.type | recurrence }}</mat-icon>
+      </div>
+      <ng-template #installments_info>{{ expenditure.paid }} / {{ expenditure.total }}</ng-template>
+    </mat-cell>
+  </ng-container>
+
+   <!-- Actions Column -->
+   <ng-container matColumnDef="actions">
+    <mat-header-cell *matHeaderCellDef class="action-column-header">
+      <button mat-mini-fab color="accent" aria-label="Adicionar Receita">
+        <mat-icon (click)="onAdd()" >add</mat-icon>
+      </button>
+    </mat-header-cell>
+
+    <mat-cell *matCellDef="let expenditure" class="action-column">
+      <button mat-icon-button color="primary" aria-label="Editar Receita" [disabled]="expenditure.recurrence.type == 'CREDIT_CARD'">
+        <mat-icon (click)="onEdit(expenditure)">edit</mat-icon>
+      </button>
+
+      <button mat-icon-button color="warn" aria-label="Excluir Receita" [disabled]="expenditure.recurrence.type == 'CREDIT_CARD'">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </mat-cell>
+  </ng-container>
+
+  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+</mat-table>

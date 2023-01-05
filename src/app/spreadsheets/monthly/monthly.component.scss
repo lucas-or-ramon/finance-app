@@ -1,0 +1,46 @@
+.main-cards {
+  width: 50%;
+  margin: 2em auto;
+  text-align: center;
+}
+
+.credit-cards {
+  width: 40%;
+  margin: 2em auto;
+  text-align: center;
+  color: green;
+}
+
+.column-flex {
+  display: flex;
+  flex-direction: column;
+  min-width: 300px;
+}
+
+.loading-spinner {
+  padding: 25px;
+  background: rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.display-flex {
+  display: flex;
+}
+
+.align-right {
+  justify-content: right;
+}
+
+.align-center {
+  justify-content: center;
+}
+
+.white-icon {
+  color: white;
+}
+
+.date-input-height {
+  line-height: 0.3em;
+}
