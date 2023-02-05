@@ -1,99 +1,61 @@
 <mat-card>
-  <mat-toolbar class="display-flex" *ngIf="monthly$ | async as monthly; else loading">
-    <mat-toolbar color="accent"><span>Planilha Mensal</span></mat-toolbar>
+  <mat-card-header class="flexSpaceBetween" *ngIf="monthly$ | async as monthly; else loading">
+    <mat-card-title>Planilha Mensal</mat-card-title>
 
-    <mat-toolbar color="accent" class="align-center">
-      <button (click)="onLastMonth()" mat-raised-button color="accent">
-        <mat-icon class="white-icon" aria-hidden="false" fontIcon="chevron_left">chevron_left</mat-icon>
+    <div>
+      <mat-label>Ano:</mat-label>
+      <mat-select class="select-date" [(value)]="selectedYear" (selectionChange)="onYearSelect($event.value)">
+        <mat-option *ngFor="let year of years" [value]="year">{{year}}</mat-option>
+      </mat-select>
+    </div>
+
+    <div>
+      <mat-label>Mês:</mat-label>
+      <mat-select class="select-date" [(value)]="selectedMonth" (selectionChange)="onMonthSelect($event.value)">
+        <mat-option *ngFor="let month of months" [value]="month">{{month}}</mat-option>
+      </mat-select>
+    </div>
+
+    <div>
+      <button mat-icon-button class="example-icon" (click)="queryMonthAndYear()"
+              aria-label="Example icon-button with menu icon">
+        <mat-icon>search</mat-icon>
       </button>
+    </div>
 
-      <mat-form-field appearance="standard">
-        <mat-label>Month and Year</mat-label>
-        <input class="date-input-height" matInput [matDatepicker]="dpCurrentDate" value="{{ monthly.date | date:'dd:MM' }}">
-        <mat-datepicker-toggle matSuffix [for]="dpCurrentDate"></mat-datepicker-toggle>
-        <mat-datepicker #dpCurrentDate startView="year" panelClass="example-month-picker"></mat-datepicker>
-      </mat-form-field>
+    <div>
+      <span>Receitas: {{ monthly.totalRevenue | currency: 'R$' }}</span>
+    </div>
 
-      <button (click)="onLaterMonth()" mat-raised-button color="accent">
-        <mat-icon class="white-icon" aria-hidden="false" fontIcon="chevron_right">chevron_left</mat-icon>
-      </button>
-    </mat-toolbar>
+    <div>
+      <span>Despesas: {{ monthly.totalExpenditure | currency: 'R$' }}</span>
+    </div>
 
-    <mat-toolbar color="accent" class="align-right"><span>{{ monthly.balance | currency: 'R$' }}</span></mat-toolbar>
-  </mat-toolbar>
+    <div>
+      <span>Total: {{ monthly.balance | currency: 'R$' }}</span>
+    </div>
+  </mat-card-header>
 
-  <div class="display-flex">
-    <mat-card class="main-cards">
-      <div class="display-flex">
-        <mat-toolbar color="primary"><span>Receitas</span></mat-toolbar>
-        <mat-toolbar color="primary" class="align-right" *ngIf="monthly$ | async as monthly; else loading"><span>{{
-            monthly.totalRevenue | currency:'R$' }}</span></mat-toolbar>
-      </div>
-      <div class="column-flex mat-elevation-z8">
-        <app-revenue-list *ngIf="monthly$ | async as monthly; else loading" [revenues]="monthly.revenues"
-          (add)="onAdd('revenue')" (edit)="onEdit($event, 'revenue')"></app-revenue-list>
+  <mat-card-content>
+    <mat-grid-list cols="2">
+      <mat-grid-tile>
+        <app-registry-list-card class="card-list-registries" *ngIf="revenues$ | async as revenues; else loading" [cardRegistries]="revenues"
+                                [registryType]="'Receitas'"></app-registry-list-card>
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <app-registry-list-card class="card-list-registries" *ngIf="expenditures$ | async as expenditure; else loading"
+                                [cardRegistries]="expenditure" [registryType]="'Despesas'"></app-registry-list-card>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </mat-card-content>
 
-        <ng-template #loading>
-          <div class="loading-spinner">
-            <mat-spinner></mat-spinner>
-          </div>
-        </ng-template>
-      </div>
-    </mat-card>
+  <mat-card-actions>
+    <button mat-raised-button color="">Adicionar</button>
+  </mat-card-actions>
 
-    <mat-card class="main-cards">
-      <div class="display-flex">
-        <mat-toolbar color="warn"><span>Despesas</span></mat-toolbar>
-        <mat-toolbar color="warn" class="align-right" *ngIf="monthly$ | async as monthly; else loading">
-          <span>{{ monthly.totalExpenditure | currency:'R$' }}</span>
-        </mat-toolbar>
-      </div>
-      <div class="column-flex mat-elevation-z8">
-        <app-expenditure-list *ngIf="monthly$ | async as monthly; else loading" [expenditures]="monthly.expenditures"
-          (add)="onAdd('expenditure')" (edit)="onEdit($event, 'expenditure')"></app-expenditure-list>
-
-        <ng-template #loading>
-          <div class="loading-spinner">
-            <mat-spinner></mat-spinner>
-          </div>
-        </ng-template>
-      </div>
-    </mat-card>
-  </div>
-</mat-card>
-
-<mat-card>
-  <div class="display-flex">
-    <mat-toolbar color="accent"><span>Cartões de Crédito</span></mat-toolbar>
-    <mat-toolbar color="accent" class="align-right" *ngIf="monthly$ | async as monthly; else loading"><span>{{0 |
-        currency:'R$' }}</span></mat-toolbar>
-  </div>
-
-  <div class="display-flex" *ngIf="monthly$ | async as monthly; else loading">
-
-    <mat-card class="credit-cards" *ngFor="let creditCard of monthly.creditCards">
-
-      <div class="display-flex">
-        <mat-toolbar color="secondary">
-          <span>{{ creditCard.name }}</span>
-        </mat-toolbar>
-        <mat-toolbar color="secondary" class="align-right">
-          <span>{{ creditCard.total | currency:'R$' }}</span>
-        </mat-toolbar>
-      </div>
-      <div class="column-flex mat-elevation-z8">
-        <app-credit-card-list [creditCardExpenditures]="creditCard.creditCardExpenditures"
-          (add)="onAdd('credit-card-expenditure')" (edit)="onEdit($event, 'credit-card-expenditure')">
-        </app-credit-card-list>
-      </div>
-
-    </mat-card>
-
-    <ng-template #loading>
-      <div class="loading-spinner">
-        <mat-spinner></mat-spinner>
-      </div>
-    </ng-template>
-
-  </div>
+  <ng-template #loading>
+    <div class="loading-spinner">
+      <mat-spinner></mat-spinner>
+    </div>
+  </ng-template>
 </mat-card>

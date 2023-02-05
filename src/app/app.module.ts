@@ -9,6 +9,8 @@ import { AppComponent } from './app.component';
 import {LOCALE_ID} from '@angular/core';
 import { registerLocaleData } from '@angular/common';
 import localePt from '@angular/common/locales/pt'
+import {AppMaterialModule} from "./shared/app-material/app-material.module";
+import {SharedModule} from "./shared/shared.module";
 
 registerLocaleData(localePt, 'pt')
 
@@ -21,7 +23,9 @@ registerLocaleData(localePt, 'pt')
     AppRoutingModule,
     BrowserAnimationsModule,
     MatToolbarModule,
-    HttpClientModule
+    HttpClientModule,
+    AppMaterialModule,
+    SharedModule
   ],
   providers: [{
     provide: LOCALE_ID,

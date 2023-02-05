@@ -6,7 +6,7 @@ import {
   ActivatedRouteSnapshot
 } from '@angular/router';
 import { Observable, of } from 'rxjs';
-import { RecurrenceType, Registry, Status } from '../model/monthly';
+import { Registry } from '../model/monthly';
 
 @Injectable({
   providedIn: 'root'
@@ -32,17 +32,8 @@ export class MonthlyResolver implements Resolve<Registry> {
     return of({
       id: 0,
       date: new Date(),
-      paid: 0,
       value: 0.0,
-      total: 0,
-      status: Status.PENDING,
-      recurrence: {
-        type: RecurrenceType.NORMAL,
-        finalDate: new Date(),
-        initialDate: new Date()
-      },
-      description: '',
-      creationDate: new Date()
+      description: ''
     });
   }
 }

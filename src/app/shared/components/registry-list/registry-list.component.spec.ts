@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CreditCardListComponent } from './credit-card-list.component';
+import { RegistryListComponent } from './registry-list.component';
 
-describe('CreditCardListComponent', () => {
-  let component: CreditCardListComponent;
-  let fixture: ComponentFixture<CreditCardListComponent>;
+describe('RegistryListComponent', () => {
+  let component: RegistryListComponent;
+  let fixture: ComponentFixture<RegistryListComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CreditCardListComponent ]
+      declarations: [ RegistryListComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(CreditCardListComponent);
+    fixture = TestBed.createComponent(RegistryListComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

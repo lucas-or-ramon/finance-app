@@ -1,12 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl, FormControlName } from '@angular/forms';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
-import { ActivatedRoute, Router } from '@angular/router';
-import { catchError, Observable, of } from 'rxjs';
-import { ErrorDialogComponent } from 'src/app/shared/components/error-dialog/error-dialog.component';
+import {Component, OnInit} from '@angular/core';
+import {MatDialog} from '@angular/material/dialog';
+import {ActivatedRoute, Router} from '@angular/router';
+import {catchError, Observable, of} from 'rxjs';
+import {ErrorDialogComponent} from 'src/app/shared/components/error-dialog/error-dialog.component';
 
-import { Monthly, Registry } from '../model/monthly';
-import { MonthlyService } from '../services/monthly.service';
+import {Monthly, Registry, Revenue} from '../model/monthly';
+import {MonthlyService} from '../services/monthly.service';
 
 @Component({
   selector: 'app-monthly',
@@ -16,6 +15,12 @@ import { MonthlyService } from '../services/monthly.service';
 export class MonthlyComponent implements OnInit {
 
   monthly$: Observable<Monthly>;
+  revenues$: Observable<Registry[]>
+  expenditures$: Observable<Registry[]>
+  years: number[]
+  selectedYear: number
+  months: number[]
+  selectedMonth: number
 
   constructor(
     private monthlyService: MonthlyService,
@@ -23,13 +28,15 @@ export class MonthlyComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute
   ) {
-    this.monthly$ = this.monthlyService.getMonthlyResume()
-      .pipe(
-        catchError(error => {
-          this.onError('Erro ao carregar resumo mensal')
-          return of()
-        })
-      );
+    const year = new Date().getFullYear()
+    const month = new Date().getMonth() + 1
+    this.selectedYear = year
+    this.selectedMonth = month
+    this.years = [2021, 2022, 2023]
+    this.months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+    this.monthly$ = this.callMonthService()
+    this.revenues$ = this.getMonthlyRevenues()
+    this.expenditures$ = this.getMonthlyExpenditures()
   }
 
   onError(errorMessage: string) {
@@ -48,12 +55,50 @@ export class MonthlyComponent implements OnInit {
     this.router.navigate([`edit-${type}`, registry.id], {relativeTo: this.route})
   }
 
-  onLastMonth() {
-
+  onYearSelect(year: number) {
+    console.log(year)
+    this.selectedYear = year
   }
 
-  onLaterMonth() {
-
+  onMonthSelect(month: number) {
+    console.log(month)
+    this.selectedMonth = month
   }
 
+  queryMonthAndYear() {
+    this.monthly$ = this.callMonthService()
+    this.revenues$ = this.getMonthlyRevenues()
+    this.expenditures$ = this.getMonthlyExpenditures()
+  }
+
+  callMonthService(): Observable<Monthly> {
+    console.log(this.selectedYear, this.selectedMonth)
+    return this.monthlyService.getMonthlyResume(this.selectedYear, this.selectedMonth)
+      .pipe(
+        catchError(error => {
+          this.onError('Erro ao carregar resumo mensal')
+          return of()
+        })
+      );
+  }
+
+  private getMonthlyRevenues(): Observable<Registry[]> {
+    return this.monthlyService.getMonthlyRevenues(this.selectedYear, this.selectedMonth)
+      .pipe(
+        catchError(error => {
+          this.onError('Erro ao carregar resumo mensal')
+          return of()
+        })
+      );
+  }
+
+  private getMonthlyExpenditures(): Observable<Registry[]>{
+    return this.monthlyService.getMonthlyExpenditures(this.selectedYear, this.selectedMonth)
+      .pipe(
+        catchError(error => {
+          this.onError('Erro ao carregar resumo mensal')
+          return of()
+        })
+      );
+  }
 }

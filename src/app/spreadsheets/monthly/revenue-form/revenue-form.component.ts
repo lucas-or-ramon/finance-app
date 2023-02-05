@@ -1,10 +1,10 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl } from '@angular/forms';
-import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 
-import { RecurrenceType, Registry, Status } from '../../model/monthly';
+import { Registry } from '../../model/monthly';
 import { MonthlyService } from '../../services/monthly.service';
 
 @Component({
@@ -18,11 +18,7 @@ export class RevenueFormComponent implements OnInit {
     id: new FormControl(0),
     date: new FormControl(new Date(), {nonNullable: true}),
     value: new FormControl(0, {nonNullable: true}),
-    status: new FormControl(Status.PENDING, {nonNullable: true}),
-    finalDate: new FormControl(new Date()),
     description: new FormControl('', {nonNullable: true}),
-    initialDate: new FormControl(new Date()),
-    recurrenceType: new FormControl(RecurrenceType.NORMAL, {nonNullable: true}),
   });
 
   constructor(
@@ -40,11 +36,7 @@ export class RevenueFormComponent implements OnInit {
       id: revenue.id,
       date: revenue.date,
       value: revenue.value,
-      status: revenue.status,
-      finalDate: revenue.recurrence.finalDate,
       description: revenue.description,
-      initialDate: revenue.recurrence.initialDate,
-      recurrenceType: revenue.recurrence.type,
     })
   }
 

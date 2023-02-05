@@ -2,19 +2,20 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { first, Observable } from 'rxjs';
 
-import { Monthly, Registry } from '../model/monthly';
+import {Monthly, Registry, Revenue} from '../model/monthly';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MonthlyService {
 
-  private readonly API_BASE = window.location.protocol + '//' + window.location.host + '/api/v1'
+  // private readonly API_BASE = window.location.protocol + '//' + window.location.host + '/api/v1'
+  private readonly API_BASE = 'http://localhost:8080' + '/api/v1'
 
   constructor(private httpClient: HttpClient) {}
 
-  getMonthlyResume(): Observable<Monthly> {
-    return this.httpClient.get<Monthly>(`${this.API_BASE}/resume/monthly/2022/10`)
+  getMonthlyResume(year: number, month: number): Observable<Monthly> {
+    return this.httpClient.get<Monthly>(`${this.API_BASE}/resume/monthly/${year}/${month}`)
   }
 
   loadById(id: number, type: string) {
@@ -36,6 +37,14 @@ export class MonthlyService {
   }
 
   private update(registry: Partial<Registry>, type: String): Observable<Registry> {
-    return this.httpClient.put<Registry>(`${this.API_BASE}/${type}/${registry.id}?order=ONE`, registry).pipe(first());
+    return this.httpClient.put<Registry>(`${this.API_BASE}/${type}/${registry.id}`, registry).pipe(first());
+  }
+
+  getMonthlyRevenues(year: number, month: number) {
+    return this.httpClient.get<Registry[]>(`${this.API_BASE}/revenue/${year}/${month}`)
+  }
+
+  getMonthlyExpenditures(year: number, month: number) {
+    return this.httpClient.get<Registry[]>(`${this.API_BASE}/expenditure/${year}/${month}`)
   }
 }

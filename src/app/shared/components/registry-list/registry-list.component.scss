@@ -3,6 +3,10 @@ mat-table {
   max-height: 600px;
 }
 
+mat-row {
+  height: 10px;
+}
+
 .action-column {
   flex: 0 0 75px;
 }
