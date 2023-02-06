@@ -10,7 +10,8 @@ import {Monthly, Registry, Revenue} from '../model/monthly';
 export class MonthlyService {
 
   // private readonly API_BASE = window.location.protocol + '//' + window.location.host + '/api/v1'
-  private readonly API_BASE = 'http://localhost:8080' + '/api/v1'
+  // private readonly API_BASE = 'http://localhost:8080' + '/api/v1'
+  private readonly API_BASE = 'https://finance-api.fly.dev/api/v1'
 
   constructor(private httpClient: HttpClient) {}
 
