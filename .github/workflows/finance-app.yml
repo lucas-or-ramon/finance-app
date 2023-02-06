@@ -34,10 +34,6 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: dist
-      - run: cd finance-app
-      - run: pwd
-      - run: cd finance-app
-      - run: pwd
       - name: Fly Deploy
         uses: superfly/flyctl-actions/setup-flyctl@master
       - run: flyctl deploy --remote-only
