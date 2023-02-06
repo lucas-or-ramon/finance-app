@@ -56,12 +56,10 @@ export class MonthlyComponent implements OnInit {
   }
 
   onYearSelect(year: number) {
-    console.log(year)
     this.selectedYear = year
   }
 
   onMonthSelect(month: number) {
-    console.log(month)
     this.selectedMonth = month
   }
 
@@ -72,7 +70,6 @@ export class MonthlyComponent implements OnInit {
   }
 
   callMonthService(): Observable<Monthly> {
-    console.log(this.selectedYear, this.selectedMonth)
     return this.monthlyService.getMonthlyResume(this.selectedYear, this.selectedMonth)
       .pipe(
         catchError(error => {
