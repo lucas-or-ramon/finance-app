@@ -34,9 +34,9 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: dist
-      - run: cd finance-app
-      - run: ls -la
-      - run: ls -la finance-app
+      - run: ls -la finance-app/finance-app
+      - run: cd finance-app/finance-app
+      - run: pwd
       - name: Fly Deploy
         uses: superfly/flyctl-actions/setup-flyctl@master
       - run: flyctl deploy --remote-only
