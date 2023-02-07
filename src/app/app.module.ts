@@ -11,6 +11,7 @@ import { registerLocaleData } from '@angular/common';
 import localePt from '@angular/common/locales/pt'
 import {AppMaterialModule} from "./shared/app-material/app-material.module";
 import {SharedModule} from "./shared/shared.module";
+import {MatDialogModule} from "@angular/material/dialog";
 
 registerLocaleData(localePt, 'pt')
 
@@ -25,6 +26,7 @@ registerLocaleData(localePt, 'pt')
     MatToolbarModule,
     HttpClientModule,
     AppMaterialModule,
+    MatDialogModule,
     SharedModule
   ],
   providers: [{

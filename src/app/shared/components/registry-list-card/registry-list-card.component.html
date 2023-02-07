@@ -4,6 +4,10 @@
   </mat-card-header>
 
   <div class="mat-elevation-z8">
-    <app-registry-list [registries]="cardRegistries"></app-registry-list>
+    <app-registry-list [registries]="cardRegistries"
+                       [registryType]="registryType"
+                       (add)="onAdd($event)"
+                       (edit)="onEdit($event)">
+    </app-registry-list>
   </div>
 </mat-card>

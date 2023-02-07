@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import {HttpClient, HttpResponse, HttpStatusCode} from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { first, Observable } from 'rxjs';
 
@@ -21,15 +21,8 @@ export class MonthlyService {
     return this.httpClient.get<Registry>(`${this.API_BASE}/${type}/${id}`);
   }
 
-  save(registry: Partial<Registry>, type: String): Observable<Registry> {
-    if (registry.id == 0) {
-      return this.create(registry, type);
-    }
-    return this.update(registry, type);
-  }
-
-  private create(registry: Partial<Registry>, type: String): Observable<Registry> {
-    return this.httpClient.post<Registry>(`${this.API_BASE}/${type}`, registry).pipe(first());
+  save(registry: Registry, type: String): Observable<HttpResponse<Registry>> {
+    return this.httpClient.post<HttpResponse<Registry>>(`${this.API_BASE}/${type}`, registry);
   }
 
   private update(registry: Partial<Registry>, type: String): Observable<Registry> {

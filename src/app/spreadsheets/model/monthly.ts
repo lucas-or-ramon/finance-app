@@ -1,8 +1,19 @@
+import {AbstractControl, FormGroup} from "@angular/forms";
+
 interface Registry {
-  id: number | null;
-  date: Date
+  id: string;
+  date: Date;
   value: number;
   description: string;
+}
+interface RegistryForm extends FormGroup {
+  value: Registry;
+  controls: {
+    id: AbstractControl;
+    date: AbstractControl;
+    value: AbstractControl;
+    description: AbstractControl;
+  };
 }
 
 interface Revenue extends Registry {}
@@ -16,5 +27,10 @@ interface Monthly {
   totalExpenditure: number;
 }
 
-export {Monthly, Registry, Revenue, Expenditure}
+enum RegistryType {
+  REVENUE = "revenue",
+  EXPENDITURE = "expenditure"
+}
+
+export {Monthly, Registry, RegistryType, Revenue, Expenditure, RegistryForm}
 
