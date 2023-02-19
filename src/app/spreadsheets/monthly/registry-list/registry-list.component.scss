@@ -3,19 +3,16 @@ mat-table {
   max-height: 600px;
 }
 
-mat-row {
-  height: 10px;
-}
-
 .action-column {
-  flex: 0 0 75px;
+  text-align: right;
+  justify-content: flex-end;
 }
 
-.action-column-header {
-  flex: 0 0 75px;
+.center-cell {
+  justify-content: center;
 }
 
-.center-cell, mat-header-cell {
+mat-header-cell {
   justify-content: center;
 }
 

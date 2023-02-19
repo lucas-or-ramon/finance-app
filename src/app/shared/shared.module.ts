@@ -3,26 +3,26 @@ import {NgModule} from '@angular/core';
 
 import {AppMaterialModule} from './app-material/app-material.module';
 import {ErrorDialogComponent} from './components/error-dialog/error-dialog.component';
-import {RegistryListCardComponent} from "./components/registry-list-card/registry-list-card.component";
 import {StatusPipe} from './pipes/status.pipe';
 import {RecurrencePipe} from './pipes/recurrence.pipe';
 import {ColorStatusPipe} from './pipes/color-status.pipe';
 import {CurrentDatePipe} from './pipes/current-date.pipe';
-import {RegistryListComponent} from './components/registry-list/registry-list.component';
+import {RegistryListComponent} from '../spreadsheets/monthly/registry-list/registry-list.component';
 import {RegistryFormDialogComponent} from './components/registry-form-dialog/registry-form-dialog.component';
 import {ReactiveFormsModule} from "@angular/forms";
 import {MatGridListModule} from "@angular/material/grid-list";
+import { RegistryDeleteDialogComponent } from './components/registry-delete-dialog/registry-delete-dialog.component';
 
 @NgModule({
   declarations: [
     ErrorDialogComponent,
     StatusPipe,
     RecurrencePipe,
-    RegistryListCardComponent,
     RegistryListComponent,
     ColorStatusPipe,
     CurrentDatePipe,
-    RegistryFormDialogComponent
+    RegistryFormDialogComponent,
+    RegistryDeleteDialogComponent
   ],
     imports: [
         CommonModule,
@@ -30,6 +30,14 @@ import {MatGridListModule} from "@angular/material/grid-list";
         ReactiveFormsModule,
         MatGridListModule
     ],
-  exports: [ErrorDialogComponent, StatusPipe, RecurrencePipe, RegistryListCardComponent, ColorStatusPipe, CurrentDatePipe, RegistryListComponent, RegistryFormDialogComponent]
+  exports: [
+    ErrorDialogComponent,
+    StatusPipe,
+    RecurrencePipe,
+    ColorStatusPipe,
+    CurrentDatePipe,
+    RegistryListComponent,
+    RegistryFormDialogComponent,
+    RegistryDeleteDialogComponent]
 })
 export class SharedModule { }

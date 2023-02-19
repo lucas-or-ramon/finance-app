@@ -5,32 +5,29 @@ interface Registry {
   date: Date;
   value: number;
   description: string;
+  creditCardId: string | null | undefined;
 }
-interface RegistryForm extends FormGroup {
-  value: Registry;
-  controls: {
-    id: AbstractControl;
-    date: AbstractControl;
-    value: AbstractControl;
-    description: AbstractControl;
-  };
-}
-
-interface Revenue extends Registry {}
-
-interface Expenditure extends Registry {}
 
 interface Monthly {
   date: Date;
   balance: number;
-  totalRevenue: number;
-  totalExpenditure: number;
+  revenue: {
+    total: number
+    registries: Registry[]
+  };
+  expenditure: {
+    total: number
+    registries: Registry[]
+  };
+  creditCards: CreditCard[]
 }
 
-enum RegistryType {
-  REVENUE = "revenue",
-  EXPENDITURE = "expenditure"
+interface CreditCard {
+  id: string;
+  dueDate: Date;
+  total: number;
+  name: string;
 }
 
-export {Monthly, Registry, RegistryType, Revenue, Expenditure, RegistryForm}
+export {Monthly, Registry, CreditCard}
 

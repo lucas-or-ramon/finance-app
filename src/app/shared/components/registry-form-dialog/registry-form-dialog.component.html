@@ -1,13 +1,13 @@
-<h1 mat-dialog-title>Adicionar {{registryType}}</h1>
+<h1 mat-dialog-title>Adicionar {{ registryType }}</h1>
 <div mat-dialog-content>
     <mat-card>
       <mat-card-content>
         <form class="min-width" [formGroup]="registryForm">
           <mat-form-field class="cell-form">
             <mat-label>Dia</mat-label>
-            <input matInput [matDatepicker]="dpDate" formControlName="date">
-            <mat-datepicker-toggle matSuffix [for]="dpDate"></mat-datepicker-toggle>
-            <mat-datepicker #dpDate startView="month" panelClass="example-month-picker"></mat-datepicker>
+            <mat-select class="select-day" [(value)]="selectedDay" (selectionChange)="onDaySelect($event.value)" formControlName="date">
+              <mat-option *ngFor="let day of days" [value]="day">{{day}}</mat-option>
+            </mat-select>
           </mat-form-field>
 
           <mat-form-field class="cell-form">

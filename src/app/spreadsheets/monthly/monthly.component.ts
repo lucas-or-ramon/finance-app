@@ -1,11 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
-import {catchError, Observable, of} from 'rxjs';
+import {catchError, Observable, of, Subject} from 'rxjs';
 import {ErrorDialogComponent} from 'src/app/shared/components/error-dialog/error-dialog.component';
 
-import {Monthly, Registry} from '../model/monthly';
+import {Monthly} from '../model/monthly';
 import {MonthlyService} from '../services/monthly.service';
-import {RegistryFormDialogComponent} from "../../shared/components/registry-form-dialog/registry-form-dialog.component";
 
 @Component({
   selector: 'app-monthly',
@@ -48,7 +47,6 @@ export class MonthlyComponent implements OnInit {
 
   queryMonthAndYear() {
     this.monthly$ = this.callMonthService()
-    this.
   }
 
   callMonthService(): Observable<Monthly> {

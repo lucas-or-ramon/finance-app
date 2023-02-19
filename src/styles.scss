@@ -24,10 +24,12 @@ body {
   justify-content: flex-start !important;
 }
 
-.mat-mdc-table mat-row.mat-mdc-row {
-  height: 10px !important;
-}
-
 mat-row, mat-footer-row {
   min-height: 30px !important;
+  max-height: 30px !important;
+}
+
+mat-header-row {
+  min-height: 40px !important;
+  max-height: 40px !important;
 }

@@ -1,5 +1,5 @@
-<mat-card>
-  <mat-card-header class="flexSpaceBetween" *ngIf="monthly$ | async as monthly; else loading">
+<mat-card *ngIf="monthly$ | async as monthly; else loading">
+  <mat-card-header class="flexSpaceBetween">
     <mat-card-title>Planilha Mensal</mat-card-title>
 
     <div>
@@ -24,29 +24,25 @@
     </div>
 
     <div>
-      <span>Receitas: {{ monthly.totalRevenue | currency: 'R$' }}</span>
-    </div>
-
-    <div>
-      <span>Despesas: {{ monthly.totalExpenditure | currency: 'R$' }}</span>
-    </div>
-
-    <div>
       <span>Total: {{ monthly.balance | currency: 'R$' }}</span>
     </div>
   </mat-card-header>
 
   <mat-card-content>
-    <app-revenue-expenditure-grid [selectedYear]="selectedYear" [selectedMonth]="selectedMonth"></app-revenue-expenditure-grid>
+    <app-revenue-expenditure-grid [selectedYear]="selectedYear"
+                                  [selectedMonth]="selectedMonth"
+                                  [revenue]="monthly.revenue"
+                                  [expenditure]="monthly.expenditure"
+                                  [creditCards]="monthly.creditCards">
+    </app-revenue-expenditure-grid>
   </mat-card-content>
 
   <mat-card-actions>
     <button mat-raised-button color="">Adicionar</button>
   </mat-card-actions>
-
-  <ng-template #loading>
-    <div class="loading-spinner">
-      <mat-spinner></mat-spinner>
-    </div>
-  </ng-template>
 </mat-card>
+<ng-template #loading>
+  <div class="loading-spinner">
+    <mat-spinner></mat-spinner>
+  </div>
+</ng-template>
