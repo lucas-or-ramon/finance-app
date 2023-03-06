@@ -32,13 +32,20 @@ export class RegistryFormDialogComponent implements OnInit {
     for (let day = 1; day < numDays + 1; day++) {
       this.days.push(day)
     }
+
+    console.log(data.registry)
+    let creditCardId = ""
+    if (data.registry !== undefined && data.registry.creditCardId !== undefined) {
+      creditCardId = data.registry.creditCardId;
+    }
+
     if (data.type === "edit") {
       this.registryForm.setValue({
         id: data.registry.id,
         date: this.selectedDay,
         value: data.registry.value,
         description: data.registry.description,
-        creditCardId: data.registry.creditCardId
+        creditCardId: creditCardId
       })
     }
     this.registryType = data.registryType
