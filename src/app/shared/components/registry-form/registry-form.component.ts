@@ -7,24 +7,35 @@ import {ErrorDialogComponent} from "../error-dialog/error-dialog.component";
 
 
 @Component({
-  selector: 'app-registry-form-dialog',
-  templateUrl: './registry-form-dialog.component.html',
-  styleUrls: ['./registry-form-dialog.component.scss'],
+  selector: 'app-registry-form',
+  templateUrl: './registry-form.component.html',
+  styleUrls: ['./registry-form.component.scss'],
 })
-export class RegistryFormDialogComponent implements OnInit {
+export class RegistryFormComponent implements OnInit {
   registryForm = new FormGroup({
     id: new FormControl("", {nonNullable: true}),
-    date: new FormControl(1, {nonNullable: true}),
+    date: new FormGroup({
+      year: new FormControl(2023, {nonNullable: true}),
+      month: new FormControl(4, {nonNullable: true}),
+    }),
     value: new FormControl(0.0, {nonNullable: true}),
+    category: new FormControl("", {nonNullable: true}),
     description: new FormControl("", {nonNullable: true}),
+    recurrence: new FormGroup({
+      type: new FormControl("", {nonNullable: true}),
+      dueDate: new FormControl(1, {nonNullable: true}),
+      start: new FormControl(1, {nonNullable: true}),
+      end: new FormControl(1, {nonNullable: true}),
+    }),
     creditCardId: new FormControl("")
   });
+
   registryType: string
   days: number[] = []
   selectedDay: number
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: any,
-              private dialogRef: MatDialogRef<RegistryFormDialogComponent>,
+              private dialogRef: MatDialogRef<RegistryFormComponent>,
               private monthlyService: MonthlyService,
               public dialog: MatDialog) {
     this.selectedDay = data.date.getDate()
@@ -42,8 +53,18 @@ export class RegistryFormDialogComponent implements OnInit {
     if (data.type === "edit") {
       this.registryForm.setValue({
         id: data.registry.id,
-        date: this.selectedDay,
+        date: {
+          year: data.registry.date.getFullYear(),
+          month: data.registry.date.getMonth() + 1
+        },
         value: data.registry.value,
+        category: data.registry.category,
+        recurrence: {
+          type: data.registry.recurrence.type,
+          dueDate: data.registry.recurrence.dueDate,
+          start: data.registry.recurrence.start,
+          end: data.registry.recurrence.end
+        },
         description: data.registry.description,
         creditCardId: creditCardId
       })
@@ -85,8 +106,14 @@ export class RegistryFormDialogComponent implements OnInit {
     }
     return {
       id: id,
-      date: new Date(this.data.date.getFullYear(), this.data.date.getMonth(), registryForm.date),
       value: registryForm.value!,
+      category: registryForm.category!,
+      recurrence: {
+        type: registryForm.recurrence!.type!,
+        dueDate: registryForm.recurrence!.dueDate!,
+        start: {year: registryForm.date!.year!, month: registryForm.date!.month!},
+        end: {year: registryForm.date!.year!, month: registryForm.date!.month!}
+      },
       description: registryForm.description!,
       creditCardId: registryForm.creditCardId
     };

@@ -10,14 +10,10 @@ import {MatDividerModule} from "@angular/material/divider";
 import {FlexModule} from "@angular/flex-layout";
 import {MatGridListModule} from "@angular/material/grid-list";
 import {MatDialogModule} from "@angular/material/dialog";
-import { RevenueExpenditureGridComponent } from './monthly/revenue-expenditure-grid/revenue-expenditure-grid.component';
-import { CreditCardGridComponent } from './monthly/credit-card-grid/credit-card-grid.component';
 
 @NgModule({
   declarations: [
-    MonthlyComponent,
-    RevenueExpenditureGridComponent,
-    CreditCardGridComponent
+    MonthlyComponent
   ],
   imports: [
     CommonModule,

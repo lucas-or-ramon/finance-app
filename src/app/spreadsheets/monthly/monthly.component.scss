@@ -14,3 +14,15 @@
   justify-content: space-between;
 }
 
+.header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.header-left {
+  text-align: left;
+}
+
+.header-right {
+  text-align: right;
+}

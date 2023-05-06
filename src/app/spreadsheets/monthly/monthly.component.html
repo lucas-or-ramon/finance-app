@@ -1,48 +1,115 @@
-<mat-card *ngIf="monthly$ | async as monthly; else loading">
-  <mat-card-header class="flexSpaceBetween">
-    <mat-card-title>Planilha Mensal</mat-card-title>
+<ng-container *ngIf="monthly$ | async as monthly; else loading">
+  <mat-card>
+    <mat-card-header class="flexSpaceBetween">
+      <mat-card-title>Planilha Mensal</mat-card-title>
 
-    <div>
-      <mat-label>Ano:</mat-label>
-      <mat-select class="select-date" [(value)]="selectedYear" (selectionChange)="onYearSelect($event.value)">
-        <mat-option *ngFor="let year of years" [value]="year">{{year}}</mat-option>
-      </mat-select>
-    </div>
+      <!-- Select Month -->
+      <div>
+        <mat-label>Mês:</mat-label>
+        <mat-select class="select-date" [(value)]="selectedMonth" (selectionChange)="onMonthSelect($event.value)">
+          <mat-option *ngFor="let month of months" [value]="month">{{ month | monthName }}</mat-option>
+        </mat-select>
+      </div>
 
-    <div>
-      <mat-label>Mês:</mat-label>
-      <mat-select class="select-date" [(value)]="selectedMonth" (selectionChange)="onMonthSelect($event.value)">
-        <mat-option *ngFor="let month of months" [value]="month">{{month}}</mat-option>
-      </mat-select>
-    </div>
+      <!-- Select Year -->
+      <div>
+        <mat-label>Ano:</mat-label>
+        <mat-select class="select-date" [(value)]="selectedYear" (selectionChange)="onYearSelect($event.value)">
+          <mat-option *ngFor="let year of years" [value]="year">{{year}}</mat-option>
+        </mat-select>
+      </div>
 
-    <div>
-      <button mat-icon-button class="example-icon" (click)="queryMonthAndYear()"
-              aria-label="Example icon-button with menu icon">
-        <mat-icon>search</mat-icon>
-      </button>
-    </div>
+      <!-- Search Button -->
+      <div>
+        <button mat-icon-button class="example-icon" (click)="queryMonthAndYear()"
+                aria-label="Example icon-button with menu icon">
+          <mat-icon>search</mat-icon>
+        </button>
+      </div>
 
-    <div>
-      <span>Total: {{ monthly.balance | currency: 'R$' }}</span>
-    </div>
-  </mat-card-header>
+      <!-- Total Balance -->
+      <div>
+        <span>Total: {{ monthly.balance | currency: 'R$' }}</span>
+      </div>
+    </mat-card-header>
 
-  <mat-card-content>
-    <app-revenue-expenditure-grid [selectedYear]="selectedYear"
-                                  [selectedMonth]="selectedMonth"
-                                  [revenue]="monthly.revenue"
-                                  [expenditure]="monthly.expenditure"
-                                  [creditCards]="monthly.creditCards">
-    </app-revenue-expenditure-grid>
-    <app-credit-card-grid [creditCards]="monthly.creditCards">
-    </app-credit-card-grid>
-  </mat-card-content>
+    <mat-card-content>
+      <!-- Revenue Card -->
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title-group>
+            <mat-card-title>Receitas</mat-card-title>
+            <mat-card-subtitle>{{ monthly.totalRevenue | currency: 'R$' }}</mat-card-subtitle>
+          </mat-card-title-group>
+        </mat-card-header>
 
-  <mat-card-actions>
-    <button mat-raised-button color="">Adicionar</button>
-  </mat-card-actions>
-</mat-card>
+        <mat-card-content>
+          <div class="mat-elevation-z8">
+            <mat-table mat-table [dataSource]="monthly.revenues">
+
+              <!-- Category Column -->
+              <ng-container matColumnDef="category">
+                <mat-header-cell *matHeaderCellDef> Categoria</mat-header-cell>
+                <mat-cell *matCellDef="let revenue"> {{ revenue.category }} </mat-cell>
+              </ng-container>
+
+              <!-- Data Column -->
+              <ng-container matColumnDef="date">
+                <mat-header-cell *matHeaderCellDef> Dia</mat-header-cell>
+                <mat-cell *matCellDef="let revenue"> {{ revenue.recurrence.dueDate }} </mat-cell>
+              </ng-container>
+
+              <!-- Recurrence Column -->
+              <ng-container matColumnDef="recurrence">
+                <mat-header-cell *matHeaderCellDef> Recorrência</mat-header-cell>
+                <mat-cell *matCellDef="let revenue"> {{ revenue.recurrence.type }} </mat-cell>
+              </ng-container>
+
+              <!-- Description Column -->
+              <ng-container matColumnDef="description">
+                <mat-header-cell *matHeaderCellDef> Descrição</mat-header-cell>
+                <mat-cell *matCellDef="let revenue"> {{ revenue.description }} </mat-cell>
+              </ng-container>
+
+              <!-- Value Column -->
+              <ng-container matColumnDef="value">
+                <mat-header-cell *matHeaderCellDef> Valor</mat-header-cell>
+                <mat-cell *matCellDef="let revenue"> {{ revenue.value | currency:'R$'}} </mat-cell>
+              </ng-container>
+
+              <!-- Actions Column -->
+              <ng-container matColumnDef="actions">
+                <mat-header-cell *matHeaderCellDef class="action-column">
+                  <button mat-icon-button color="accent" aria-label="Adicionar">
+                    <mat-icon>add</mat-icon>
+                  </button>
+                </mat-header-cell>
+
+                <mat-cell *matCellDef="let revenue" class="action-column">
+                  <button mat-icon-button color="primary" aria-label="Editar">
+                    <mat-icon>edit</mat-icon>
+                  </button>
+
+                  <button mat-icon-button color="warn" aria-label="Excluir">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </mat-cell>
+              </ng-container>
+
+              <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+              <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+            </mat-table>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </mat-card-content>
+
+    <mat-card-actions>
+      <button mat-raised-button color="">Adicionar</button>
+    </mat-card-actions>
+  </mat-card>
+</ng-container>
+
 <ng-template #loading>
   <div class="loading-spinner">
     <mat-spinner></mat-spinner>

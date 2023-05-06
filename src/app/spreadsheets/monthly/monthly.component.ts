@@ -1,9 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
-import {catchError, Observable, of, Subject} from 'rxjs';
+import {catchError, Observable, of} from 'rxjs';
+import {map} from 'rxjs/operators';
 import {ErrorDialogComponent} from 'src/app/shared/components/error-dialog/error-dialog.component';
 
-import {Monthly} from '../model/monthly';
+import {FinanceDate, Monthly} from '../model/monthly';
 import {MonthlyService} from '../services/monthly.service';
 
 @Component({
@@ -13,29 +14,20 @@ import {MonthlyService} from '../services/monthly.service';
 })
 export class MonthlyComponent implements OnInit {
 
-  monthly$: Observable<Monthly>;
-  years: number[]
-  selectedYear: number
-  months: number[]
-  selectedMonth: number
+  readonly years: number[] = [2021, 2022, 2023, 2024, 2025, 2026]
+  readonly months: number[] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+  readonly displayedColumns: string[] = ['category', 'date', 'recurrence', 'description', 'value', 'actions'];
+
+  monthly$: Observable<Monthly | null> = of(null)
+  selectedYear: number = new Date().getFullYear();
+  selectedMonth: number = new Date().getMonth();
 
   constructor(private monthlyService: MonthlyService, public dialog: MatDialog) {
-    const year = new Date().getFullYear()
-    const month = new Date().getMonth() + 1
-    this.selectedYear = year
-    this.selectedMonth = month
-    this.years = [2021, 2022, 2023]
-    this.months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+  }
+
+  ngOnInit(): void {
     this.monthly$ = this.callMonthService()
   }
-
-  onError(errorMessage: string) {
-    this.dialog.open(ErrorDialogComponent, {
-      data: errorMessage,
-    });
-  }
-
-  ngOnInit(): void {}
 
   onYearSelect(year: number) {
     this.selectedYear = year
@@ -49,13 +41,24 @@ export class MonthlyComponent implements OnInit {
     this.monthly$ = this.callMonthService()
   }
 
-  callMonthService(): Observable<Monthly> {
-    return this.monthlyService.getMonthlyResume(this.selectedYear, this.selectedMonth)
+  callMonthService(): Observable<Monthly | null> {
+    const date: FinanceDate = {year: this.selectedYear, month: this.selectedMonth + 1};
+    return this.monthlyService.getMonthlyResume(date)
       .pipe(
-        catchError(error => {
-          this.onError('Erro ao carregar resumo mensal')
-          return of()
+        map((monthly: Monthly) => {
+          console.log(monthly)
+          return monthly;
+        }),
+        catchError((err: any) => {
+          console.log(err);
+          return of(null);
         })
       );
+  }
+
+  onError(errorMessage: string) {
+    this.dialog.open(ErrorDialogComponent, {
+      data: errorMessage,
+    });
   }
 }

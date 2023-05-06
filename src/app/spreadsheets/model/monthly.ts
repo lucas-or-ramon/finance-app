@@ -1,33 +1,39 @@
-import {AbstractControl, FormGroup} from "@angular/forms";
-
 interface Registry {
   id: string;
-  date: Date;
   value: number;
+  category: string;
   description: string;
+  recurrence: Recurrence;
   creditCardId: string | null | undefined;
 }
 
-interface Monthly {
-  date: Date;
-  balance: number;
-  revenue: {
-    total: number
-    registries: Registry[]
-  };
-  expenditure: {
-    total: number
-    registries: Registry[]
-  };
-  creditCards: CreditCard[]
+interface Recurrence {
+  type: string;
+  dueDate: number;
+  start: FinanceDate;
+  end: FinanceDate;
+}
+
+interface FinanceDate {
+  year: number;
+  month: number;
 }
 
 interface CreditCard {
   id: string;
-  dueDate: Date;
-  total: number;
   name: string;
+  dueDate: number;
 }
 
-export {Monthly, Registry, CreditCard}
+interface Monthly {
+  date: FinanceDate;
+  balance: number;
+  totalRevenue: number;
+  totalExpenditure: number;
+  revenues: Registry[],
+  expenditures: Registry[],
+  creditCards: CreditCard[]
+}
+
+export {Monthly, Registry, FinanceDate, Recurrence, CreditCard}
 

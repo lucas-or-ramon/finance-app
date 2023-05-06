@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { RegistryListComponent } from './registry-list.component';
+import { RegistryFormComponent } from './registry-form.component';
 
-describe('RegistryListComponent', () => {
-  let component: RegistryListComponent;
-  let fixture: ComponentFixture<RegistryListComponent>;
+describe('RegistryFormDialogComponent', () => {
+  let component: RegistryFormComponent;
+  let fixture: ComponentFixture<RegistryFormComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ RegistryListComponent ]
+      declarations: [ RegistryFormComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(RegistryListComponent);
+    fixture = TestBed.createComponent(RegistryFormComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

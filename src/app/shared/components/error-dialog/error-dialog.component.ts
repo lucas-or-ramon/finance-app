@@ -10,6 +10,5 @@ export class ErrorDialogComponent implements OnInit {
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: string) {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 }
